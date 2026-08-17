@@ -1,0 +1,667 @@
+<?xml version="1.0"?>
+<robot name="a300-00000">
+  <!-- ── materials ─────────────────────────────────────────────────-->
+  <material name="cam_mat">
+    <color rgba="0.40 0.41 0.43 1.0"/>
+  </material>
+  <material name="clearpath_dark_grey">
+    <color rgba="0.05 0.05 0.05 1.0"/>
+  </material>
+  <material name="dark_grey">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+  <material name="yellow">
+    <color rgba="1 0.6038269 0 1.0"/>
+  </material>
+  <!-- ── base ──────────────────────────────────────────────────────-->
+  <joint name="base_footprint_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.1651"/>
+    <parent link="chassis_link"/>
+    <child link="base_footprint"/>
+  </joint>
+  <link name="base_footprint"/>
+  <link name="base_link"/>
+  <joint name="chassis_joint" type="fixed">
+    <child link="chassis_link"/>
+    <parent link="base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="chassis_link">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/chassis.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/livery.dae"/>
+      </geometry>
+    </visual>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/status_lights.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <material name="clearpath_yellow"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/chassis_collision.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="70"/>
+      <origin rpy="0 0 0" xyz="0 0 0.1147795"/>
+      <inertia ixx="1.1408911178058334" ixy="0" ixz="0" iyy="4.621734451139166" iyz="0" izz="5.147823333333332"/>
+    </inertial>
+  </link>
+  <!-- ── drivetrain: suspension ────────────────────────────────────-->
+  <joint name="left_suspension_beam_joint" type="fixed">
+    <parent link="left_suspension_beam_spacer_link"/>
+    <child link="left_suspension_beam_link"/>
+    <origin xyz="0 0.0159 0"/>
+  </joint>
+  <link name="left_suspension_beam_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="2"/>
+      <inertia ixx="0.00182638538" ixy="0" ixz="0" iyy="0.0590440153" iyz="0" izz="0.0572477133"/>
+    </inertial>
+    <visual>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/suspension_beam.stl"/>
+      </geometry>
+      <origin rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/suspension_beam.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_suspension_beam_spacer_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="left_suspension_beam_spacer_link"/>
+    <origin xyz="0.0 0.192 0.03763" rpy="0 0 0"/>
+  </joint>
+  <link name="left_suspension_beam_spacer_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.3"/>
+      <inertia ixx="0.000107126507" ixy="0" ixz="0" iyy="0.00024596726" iyz="0" izz="0.000151481254"/>
+    </inertial>
+    <visual>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/suspension_spacer.stl"/>
+      </geometry>
+      <origin rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/suspension_spacer.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_suspension_beam_joint" type="fixed">
+    <parent link="right_suspension_beam_spacer_link"/>
+    <child link="right_suspension_beam_link"/>
+    <origin xyz="0 -0.0159 0"/>
+  </joint>
+  <link name="right_suspension_beam_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="2"/>
+      <inertia ixx="0.00182638538" ixy="0" ixz="0" iyy="0.0590440153" iyz="0" izz="0.0572477133"/>
+    </inertial>
+    <visual>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/suspension_beam.stl"/>
+      </geometry>
+      <origin rpy="0 0 3.141592653589793"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/suspension_beam.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_suspension_beam_spacer_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="right_suspension_beam_spacer_link"/>
+    <origin xyz="0.0 -0.192 0.03763" rpy="0 0 0"/>
+  </joint>
+  <link name="right_suspension_beam_spacer_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.3"/>
+      <inertia ixx="0.000107126507" ixy="0" ixz="0" iyy="0.00024596726" iyz="0" izz="0.000151481254"/>
+    </inertial>
+    <visual>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/suspension_spacer.stl"/>
+      </geometry>
+      <origin rpy="0 0 3.141592653589793"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/suspension_spacer.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- ── drivetrain: motors ────────────────────────────────────────-->
+  <joint name="front_left_motor_joint" type="fixed">
+    <parent link="left_suspension_beam_link"/>
+    <child link="front_left_motor_link"/>
+    <origin rpy="0 0 0" xyz="0.256 0.0095 -0.0085"/>
+  </joint>
+  <link name="front_left_motor_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="2.5"/>
+      <inertia ixx="0.00655834835" ixy="0" ixz="0" iyy="0.0065583484" iyz="0" izz="0.00661500016"/>
+    </inertial>
+    <visual>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/motor.stl"/>
+      </geometry>
+      <origin rpy="0 0 3.141592653589793"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1260 0.1260 0.1249"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="front_right_motor_joint" type="fixed">
+    <parent link="right_suspension_beam_link"/>
+    <child link="front_right_motor_link"/>
+    <origin rpy="0 0 0" xyz="0.256 0.0095 -0.0085"/>
+  </joint>
+  <link name="front_right_motor_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="2.5"/>
+      <inertia ixx="0.00655834835" ixy="0" ixz="0" iyy="0.0065583484" iyz="0" izz="0.00661500016"/>
+    </inertial>
+    <visual>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/motor.stl"/>
+      </geometry>
+      <origin rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1260 0.1260 0.1249"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="rear_left_motor_joint" type="fixed">
+    <parent link="left_suspension_beam_link"/>
+    <child link="rear_left_motor_link"/>
+    <origin rpy="0 0 0" xyz="-0.256 0.0095 -0.0085"/>
+  </joint>
+  <link name="rear_left_motor_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="2.5"/>
+      <inertia ixx="0.00655834835" ixy="0" ixz="0" iyy="0.0065583484" iyz="0" izz="0.00661500016"/>
+    </inertial>
+    <visual>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/motor.stl"/>
+      </geometry>
+      <origin rpy="0 0 3.141592653589793"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1260 0.1260 0.1249"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="rear_right_motor_joint" type="fixed">
+    <parent link="right_suspension_beam_link"/>
+    <child link="rear_right_motor_link"/>
+    <origin rpy="0 0 0" xyz="-0.256 0.0095 -0.0085"/>
+  </joint>
+  <link name="rear_right_motor_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="2.5"/>
+      <inertia ixx="0.00655834835" ixy="0" ixz="0" iyy="0.0065583484" iyz="0" izz="0.00661500016"/>
+    </inertial>
+    <visual>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/motor.stl"/>
+      </geometry>
+      <origin rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1260 0.1260 0.1249"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- ── drivetrain: wheels ────────────────────────────────────────-->
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="front_left_motor_link"/>
+    <child link="front_left_wheel_link"/>
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <origin xyz="0 0.0655 0" rpy="0 0 0"/>
+  </joint>
+  <link name="front_left_wheel_link">
+    <inertial>
+      <mass value="2.5"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.019758025" ixy="0" ixz="0" iyy="0.0340725125" iyz="0" izz="0.019758025"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/outdoor_left.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.1143" radius="0.1651"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="front_right_motor_link"/>
+    <child link="front_right_wheel_link"/>
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <origin xyz="0 -0.0655 0" rpy="0 0 0"/>
+  </joint>
+  <link name="front_right_wheel_link">
+    <inertial>
+      <mass value="2.5"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.019758025" ixy="0" ixz="0" iyy="0.0340725125" iyz="0" izz="0.019758025"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/outdoor_right.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.1143" radius="0.1651"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="rear_left_motor_link"/>
+    <child link="rear_left_wheel_link"/>
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <origin xyz="0 0.0655 0" rpy="0 0 0"/>
+  </joint>
+  <link name="rear_left_wheel_link">
+    <inertial>
+      <mass value="2.5"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.019758025" ixy="0" ixz="0" iyy="0.0340725125" iyz="0" izz="0.019758025"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/outdoor_left.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.1143" radius="0.1651"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="rear_right_motor_link"/>
+    <child link="rear_right_wheel_link"/>
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <origin xyz="0 -0.0655 0" rpy="0 0 0"/>
+  </joint>
+  <link name="rear_right_wheel_link">
+    <inertial>
+      <mass value="2.5"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.019758025" ixy="0" ixz="0" iyy="0.0340725125" iyz="0" izz="0.019758025"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
+      <material name="clearpath_dark_grey"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/outdoor_right.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.1143" radius="0.1651"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- ── bumpers ───────────────────────────────────────────────────-->
+  <joint name="front_bumper_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.3685 0.0 0.01805"/>
+    <parent link="chassis_link"/>
+    <child link="front_bumper_link"/>
+  </joint>
+  <link name="front_bumper_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1.5"/>
+      <inertia ixx="0.0177388902" ixy="0" ixz="0" iyy="0.00212985649" iyz="0" izz="0.0196222563"/>
+    </inertial>
+    <visual>
+      <origin xyz="-0.368500 0 -0.018050"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/bumper.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.368500 0 -0.018050"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/bumper_collision.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="rear_bumper_joint" type="fixed">
+    <origin rpy="0 0 3.141592653589793" xyz="-0.3685 0.0 0.01805"/>
+    <parent link="chassis_link"/>
+    <child link="rear_bumper_link"/>
+  </joint>
+  <link name="rear_bumper_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1.5"/>
+      <inertia ixx="0.0177388902" ixy="0" ixz="0" iyy="0.00212985649" iyz="0" izz="0.0196222563"/>
+    </inertial>
+    <visual>
+      <origin xyz="-0.368500 0 -0.018050"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/bumper.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.368500 0 -0.018050"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/bumper_collision.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- ── enclosure ─────────────────────────────────────────────────-->
+  <joint name="enclosure_access_panels_joint" type="fixed">
+    <parent link="enclosure_enclosure_link"/>
+    <child link="enclosure_access_panels_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="enclosure_access_panels_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia ixx="0.0203111664" ixy="0" ixz="0" iyy="0.0641566728" iyz="0" izz="0.0790954463"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/observer_access_panels.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="yellow">
+        </material>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+  </link>
+  <joint name="enclosure_enclosure_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="enclosure_enclosure_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+  </joint>
+  <link name="enclosure_enclosure_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="5"/>
+      <inertia ixx="0.100008659" ixy="0" ixz="0" iyy="0.407722019" iyz="0" izz="0.478678261"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/observer_enclosure.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="dark_grey">
+        </material>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/observer_enclosure.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+  <!-- ── sensor arch ───────────────────────────────────────────────-->
+  <joint name="sensor_arch_joint" type="fixed">
+    <parent link="enclosure_enclosure_link"/>
+    <child link="sensor_arch_link"/>
+    <origin rpy="0 0 0" xyz="-0.4028 0 0.4074593"/>
+  </joint>
+  <link name="sensor_arch_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="4"/>
+      <inertia ixx="0.206948515" ixy="0" ixz="0" iyy="0.0764053299" iyz="0" izz="0.151123482"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/observer_arch.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="yellow">
+        </material>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/clearpath_platform/observer_arch.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+  <!-- ── sensor: lidar (Ouster OS1) ────────────────────────────────-->
+  <joint name="lidar3d_0_base_joint" type="fixed">
+    <child link="lidar3d_0_base_link"/>
+    <parent link="sensor_arch_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.0043 0.0 0.4468"/>
+  </joint>
+  <link name="lidar3d_0_base_link">
+    <inertial>
+      <mass value="0.0"/>
+      <origin xyz="0 0 0.01125"/>
+      <inertia ixx="0.0" ixy="0" ixz="0" iyy="0.0" iyz="0" izz="0.0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.0225"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_sensors/os1_base.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.01125"/>
+      <geometry>
+        <box size="0.11 0.11 0.0225"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="lidar3d_0_cap_joint" type="fixed">
+    <child link="lidar3d_0_cap_link"/>
+    <parent link="lidar3d_0_link"/>
+    <origin xyz="0 0 0.05835"/>
+  </joint>
+  <link name="lidar3d_0_cap_link">
+    <inertial>
+      <mass value="0.092"/>
+      <origin xyz="0 0 0.011"/>
+      <inertia ixx="4.7022565241666676e-05" ixy="0" ixz="0" iyy="4.7022565241666676e-05" iyz="0" izz="8.662379715000001e-05"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.05835"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_sensors/os1_halo.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <material>
+        <color rgba="0.8 0.8 0.8 1.0"/>
+      </material>
+      <origin rpy="0 0 0" xyz="0 0 0.011"/>
+      <geometry>
+        <cylinder length="0.022" radius="0.043395"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="lidar3d_0_joint" type="fixed">
+    <child link="lidar3d_0_link"/>
+    <parent link="lidar3d_0_base_link"/>
+    <origin xyz="0 0 0.0225"/>
+  </joint>
+  <link name="lidar3d_0_link">
+    <inertial>
+      <mass value="0.41"/>
+      <origin xyz="0 0 0.029175"/>
+      <inertia ixx="0.00031028364375" ixy="0" ixz="0" iyy="0.00031028364375" iyz="0" izz="0.00038791124999999993"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/clearpath_sensors/os1_lidar.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <material>
+        <color rgba="0.8 0.8 0.8 1.0"/>
+      </material>
+      <origin rpy="0 0 0" xyz="0 0 0.029175"/>
+      <geometry>
+        <cylinder length="0.05835" radius="0.0435"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="lidar3d_0_sensor_joint" type="fixed">
+    <child link="lidar3d_0_sensor_link"/>
+    <parent link="lidar3d_0_link"/>
+    <origin xyz="0 0 0.038195"/>
+  </joint>
+  <link name="lidar3d_0_sensor_link"/>
+  <!-- ── sensor: camera (StereoLabs ZED) ───────────────────────────-->
+  <joint name="camera_0_baro_joint" type="fixed">
+    <parent link="camera_0_camera_center"/>
+    <child link="camera_0_baro_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="camera_0_baro_link"/>
+  <joint name="camera_0_camera_center_joint" type="fixed">
+    <parent link="camera_0_camera_link"/>
+    <child link="camera_0_camera_center"/>
+    <origin rpy="0 0.05 0" xyz="0 0 0.015"/>
+  </joint>
+  <link name="camera_0_camera_center">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.166"/>
+      <inertia ixx="0.000434901264" ixy="0" ixz="0" iyy="2.63684709e-05" iyz="0" izz="0.000436493087"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/zed/zed2.stl"/>
+      </geometry>
+      <material name="cam_mat">
+        </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
+      <geometry>
+        <mesh filename="meshes/zed/zed2.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="camera_0_camera_joint" type="fixed">
+    <parent link="sensor_arch_link"/>
+    <child link="camera_0_camera_link"/>
+    <origin rpy="-0.000275 -0.026948 -3.131404" xyz="-0.0131 -0.0001 0.3418"/>
+  </joint>
+  <link name="camera_0_camera_link"/>
+  <joint name="camera_0_left_camera_joint" type="fixed">
+    <parent link="camera_0_camera_center"/>
+    <child link="camera_0_left_camera_frame"/>
+    <origin rpy="0 0 0" xyz="-0.01 0.06 0"/>
+  </joint>
+  <link name="camera_0_left_camera_frame">
+  </link>
+  <joint name="camera_0_left_camera_optical_joint" type="fixed">
+    <origin rpy="-1.5707963267948966 0.0 -1.5707963267948966" xyz="0 0 0"/>
+    <parent link="camera_0_left_camera_frame"/>
+    <child link="camera_0_left_camera_frame_optical"/>
+  </joint>
+  <link name="camera_0_left_camera_frame_optical"/>
+  <joint name="camera_0_mag_joint" type="fixed">
+    <parent link="camera_0_camera_center"/>
+    <child link="camera_0_mag_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="camera_0_mag_link"/>
+  <joint name="camera_0_right_camera_joint" type="fixed">
+    <parent link="camera_0_camera_center"/>
+    <child link="camera_0_right_camera_frame"/>
+    <origin rpy="0 0 0" xyz="-0.01 -0.06 0"/>
+  </joint>
+  <link name="camera_0_right_camera_frame">
+  </link>
+  <joint name="camera_0_right_camera_optical_joint" type="fixed">
+    <origin rpy="-1.5707963267948966 0.0 -1.5707963267948966" xyz="0 0 0"/>
+    <parent link="camera_0_right_camera_frame"/>
+    <child link="camera_0_right_camera_frame_optical"/>
+  </joint>
+  <link name="camera_0_right_camera_frame_optical"/>
+  <joint name="camera_0_temp_left_joint" type="fixed">
+    <parent link="camera_0_left_camera_frame"/>
+    <child link="camera_0_temp_left_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="camera_0_temp_left_link"/>
+  <joint name="camera_0_temp_right_joint" type="fixed">
+    <parent link="camera_0_right_camera_frame"/>
+    <child link="camera_0_temp_right_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="camera_0_temp_right_link"/>
+  <!-- ── sensor: imu ───────────────────────────────────────────────-->
+  <joint name="imu_0_joint" type="fixed">
+    <origin rpy="0.0 0.0 0.0" xyz="0.059 0.0 0.161275"/>
+    <parent link="base_link"/>
+    <child link="imu_0_link"/>
+  </joint>
+  <link name="imu_0_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1e-09"/>
+      <inertia ixx="4.16666667e-13" ixy="0" ixz="0" iyy="4.16666667e-13" iyz="0" izz="4.16666667e-13"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.008409"/>
+      <geometry>
+        <box size="0.029931 0.041275 0.016818"/>
+      </geometry>
+      <material name="clearpath_dark_grey"/>
+    </visual>
+  </link>
+</robot>
