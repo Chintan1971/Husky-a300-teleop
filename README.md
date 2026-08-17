@@ -23,18 +23,14 @@ from a single Python script — no GUI interaction required.
 ros2 topic list
 ros2 topic hz /odom
 
-# 3. Drive the robot via ROS 2
-ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
-  "{linear: {x: 0.5}, angular: {z: 0.3}}"
-
-# 4. Visualise in RViz2
+# 3. Visualise in RViz2
 ros2 launch scripts/view_in_rviz.launch.py
 ```
 
 Keyboard teleop is also available in the Isaac Sim window:
 `I` forward, `K` reverse, `J` left, `L` right, `X` stop.
 
-## Quick Start (Docker)
+## Quick Start (Docker)(in work)
 
 ```bash
 # Pull the images
@@ -68,19 +64,6 @@ $ ros2 topic list
 | `/joint_states` | `sensor_msgs/JointState` | ~40 | 4 wheel joints |
 | `/odom` | `nav_msgs/Odometry` | ~40 | `frame_id: odom`, `child_frame_id: base_link` |
 | `/cmd_vel` | `geometry_msgs/Twist` | — | Subscribed → differential drive controller |
-
-### `ros2 topic hz` output
-
-```
-$ ros2 topic hz /clock
-average rate: 42.121
-$ ros2 topic hz /tf
-average rate: 35.242
-$ ros2 topic hz /joint_states
-average rate: 46.964
-$ ros2 topic hz /odom
-average rate: 49.860
-```
 
 ## Project Structure
 
