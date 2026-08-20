@@ -69,6 +69,38 @@ create_ros2_bridge_graphs(stage)
 for _ in range(30):
     simulation_app.update()
 
+# ── Setup RTX Lidar  ──────────────────────────────────────────────────────
+from isaacsim.sensors.rtx import LidarRtx
+import numpy as np
+import omni.replicator.core as rep
+
+lidar_prim_path = "/World/Husky/lidar3d_0_link/lidar3d_0_sensor_link/lidar"
+
+lidar = LidarRtx(
+    prim_path=lidar_prim_path,
+    translation=np.array([0.0, 0.0, 0.0]),
+    orientation=np.array([1.0, 0.0, 0.0, 0.0]),
+    config_file_name="Example_Rotary",
+)
+
+lidar.initialize()
+
+hydra_texture = rep.create.render_product(
+    lidar_prim_path,
+    [1, 1],
+    name="LidarRenderProduct"
+)
+
+writer = rep.writers.get("RtxLidarROS2PublishPointCloud")
+
+writer.initialize(
+    topicName="/point_cloud",
+    frameId="lidar3d_0_link"
+)
+
+writer.attach([hydra_texture])
+# lidar.attach_annotator("IsaacExtractRTXSensorPointCloudNoAccumulator")
+
 # ── Run ─────────────────────────────────────────────────────────────────────
 teleop = HuskyKeyboardTeleop(stage)
 print("Teleop: I forward, K reverse, J left, L right, X stop.")
@@ -76,9 +108,13 @@ print("ROS 2:  ros2 topic pub /cmd_vel geometry_msgs/msg/Twist ...")
 timeline = omni.timeline.get_timeline_interface()
 timeline.play()
 
+
+
 while simulation_app.is_running():
     teleop.update()
     simulation_app.update()
+    
+   
 
 teleop.close()
 timeline.stop()
