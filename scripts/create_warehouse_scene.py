@@ -85,11 +85,13 @@ lidar = LidarRtx(
 
 lidar.initialize()
 
+
 hydra_texture = rep.create.render_product(
     lidar_prim_path,
     [1, 1],
     name="LidarRenderProduct"
 )
+# ── Publish point cloud data on ros2 topic   ──────────────────────────────────────────────────────
 
 writer = rep.writers.get("RtxLidarROS2PublishPointCloud")
 
@@ -100,6 +102,68 @@ writer.initialize(
 
 writer.attach([hydra_texture])
 # lidar.attach_annotator("IsaacExtractRTXSensorPointCloudNoAccumulator")
+
+# ── Setup camera ─────────────────────────────────────────────────────────────────────
+camera_prim_path = "/World/Husky/camera_0_camera_center/camera_0_left_camera_frame/camera_0_temp_left_link/camera"
+
+from isaacsim.sensors.camera import Camera
+import omni.syntheticdata._syntheticdata as sd
+
+camera = Camera(
+    prim_path=camera_prim_path,
+    translation=np.array([0.0, 0.0, 0.0]),
+    frequency=30,
+    resolution=(640, 480),
+)
+
+camera.initialize()
+render_product = camera._render_product_path
+
+rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(
+    sd.SensorType.Rgb.name)
+
+writer = rep.writers.get(rv + "ROS2PublishImage")
+
+writer.initialize(
+    frameId="camera",
+    nodeNamespace="",
+    queueSize=1,
+    topicName="/camera/rgb"
+)
+
+writer.attach([render_product])
+
+rv = omni.syntheticdata.SyntheticData.convert_sensor_type_to_rendervar(
+    sd.SensorType.DistanceToImagePlane.name)
+
+writer = rep.writers.get(rv + "ROS2PublishImage")
+
+writer.initialize(
+    frameId="camera",
+    nodeNamespace="",
+    queueSize=1,
+    topicName="/camera/depth"
+)
+
+writer.attach([render_product])
+
+# ────────Setup IMU sensor ───────────────
+
+imu_prim_path = "/World/Husky/imu_0_link/imu"
+
+from isaacsim.sensors.physics import IMUSensor
+
+sensor = IMUSensor(
+    prim_path=imu_prim_path,
+    name="imu",
+    frequency=60,
+    translation=np.array([0, 0, 0]),
+    orientation=np.array([1, 0, 0, 0]),
+    linear_acceleration_filter_size = 10,
+    angular_velocity_filter_size = 10,
+    orientation_filter_size = 10,
+)
+
 
 # ── Run ─────────────────────────────────────────────────────────────────────
 teleop = HuskyKeyboardTeleop(stage)
@@ -113,7 +177,6 @@ timeline.play()
 while simulation_app.is_running():
     teleop.update()
     simulation_app.update()
-    
    
 
 teleop.close()

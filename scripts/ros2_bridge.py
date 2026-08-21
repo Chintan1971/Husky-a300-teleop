@@ -62,6 +62,9 @@ def create_ros2_bridge_graphs(stage):
                 # Odometry
                 ("ComputeOdom", "isaacsim.core.nodes.IsaacComputeOdometry"),
                 ("PublishOdom", "isaacsim.ros2.bridge.ROS2PublishOdometry"),
+                # IMU
+                ("ReadIMU", "isaacsim.sensors.physics.IsaacReadIMU"),
+                ("PublishIMU", "isaacsim.ros2.bridge.ROS2PublishImu"),
             ],
             keys.SET_VALUES: [
                 # ROS 2 context (domain 0)
@@ -76,6 +79,13 @@ def create_ros2_bridge_graphs(stage):
                 ("PublishOdom.inputs:topicName", "/odom"),
                 ("PublishOdom.inputs:odomFrameId", "odom"),
                 ("PublishOdom.inputs:chassisFrameId", "base_link"),
+                # IMU
+                ("PublishIMU.inputs:topicName", "/imu"),
+                ("PublishIMU.inputs:frameId", "imu"),
+                ("PublishIMU.inputs:publishOrientation", True),
+                ("PublishIMU.inputs:publishLinearAcceleration", True),
+                ("PublishIMU.inputs:publishAngularVelocity", True),
+
             ],
             keys.CONNECT: [
                 # Execution flow
@@ -84,21 +94,29 @@ def create_ros2_bridge_graphs(stage):
                 ("OnTick.outputs:tick", "PublishJointState.inputs:execIn"),
                 ("OnTick.outputs:tick", "ComputeOdom.inputs:execIn"),
                 ("OnTick.outputs:tick", "PublishOdom.inputs:execIn"),
+                ("OnTick.outputs:tick", "ReadIMU.inputs:execIn"),
+                ("OnTick.outputs:tick", "PublishIMU.inputs:execIn"),
                 # ROS 2 context
                 ("Context.outputs:context", "PublishClock.inputs:context"),
                 ("Context.outputs:context", "PublishTF.inputs:context"),
                 ("Context.outputs:context", "PublishJointState.inputs:context"),
                 ("Context.outputs:context", "PublishOdom.inputs:context"),
+                ("Context.outputs:context", "PublishIMU.inputs:context"),
                 # Simulation time → clock, odom, joint_states, tf
                 ("ReadSimTime.outputs:simulationTime", "PublishClock.inputs:timeStamp"),
                 ("ReadSimTime.outputs:simulationTime", "PublishOdom.inputs:timeStamp"),
                 ("ReadSimTime.outputs:simulationTime", "PublishJointState.inputs:timeStamp"),
                 ("ReadSimTime.outputs:simulationTime", "PublishTF.inputs:timeStamp"),
+                ("ReadSimTime.outputs:simulationTime", "PublishIMU.inputs:timeStamp"),
                 # Odometry data flow
                 ("ComputeOdom.outputs:position", "PublishOdom.inputs:position"),
                 ("ComputeOdom.outputs:orientation", "PublishOdom.inputs:orientation"),
                 ("ComputeOdom.outputs:linearVelocity", "PublishOdom.inputs:linearVelocity"),
                 ("ComputeOdom.outputs:angularVelocity", "PublishOdom.inputs:angularVelocity"),
+                # IMU data flow
+                ("ReadIMU.outputs:linAcc", "PublishIMU.inputs:linearAcceleration"),
+                ("ReadIMU.outputs:angVel", "PublishIMU.inputs:angularVelocity"),
+                ("ReadIMU.outputs:orientation", "PublishIMU.inputs:orientation"),
             ],
         },
     )
@@ -113,6 +131,9 @@ def create_ros2_bridge_graphs(stage):
     _set_prim_target(
         stage, "/World/ROS2Publishers/ComputeOdom", "inputs:chassisPrim", [CHASSIS_PRIM_PATH]
     )
+    _set_prim_target(
+        stage, "/World/ROS2Publishers/ReadIMU", "inputs:imuPrim",["/World/Husky/imu_0_link/imu"]
+)
     print("[ROS2] Publisher graph created: /clock, /tf, /joint_states, /odom")
 
     # ── Graph 2: /cmd_vel subscriber → Differential Drive ───────────────────
@@ -134,7 +155,7 @@ def create_ros2_bridge_graphs(stage):
                 # Differential controller params
                 ("DiffController.inputs:wheelRadius", WHEEL_RADIUS),
                 ("DiffController.inputs:wheelDistance", WHEEL_DISTANCE),
-                ("DiffController.inputs:maxWheelSpeed", 20.0),
+                ("DiffController.inputs:maxWheelSpeed", 50.0),
                 # Articulation controller – target the articulation root (base_link)
                 ("ArticulationCtrl.inputs:robotPath", CHASSIS_PRIM_PATH),
                 ("ArticulationCtrl.inputs:jointNames", WHEEL_JOINT_NAMES),
@@ -157,3 +178,6 @@ def create_ros2_bridge_graphs(stage):
         },
     )
     print("[ROS2] Subscriber graph created: /cmd_vel → differential drive")
+
+
+    # ─── Graph 3: ─────────────────────────────────────────────────────────────

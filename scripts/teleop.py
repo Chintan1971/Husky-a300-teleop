@@ -15,7 +15,7 @@ class HuskyKeyboardTeleop:
 
     WHEEL_RADIUS_M = 0.1651
     EFFECTIVE_TRACK_M = 0.984  # 0.562 m physical track × 1.75 skid-steer factor
-    LINEAR_SPEED_MPS = 0.5
+    LINEAR_SPEED_MPS = 1.0
     TURN_RATE_RADPS = 1.0
 
     FORWARD_KEY = carb.input.KeyboardInput.K
